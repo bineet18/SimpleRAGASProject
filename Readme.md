@@ -88,7 +88,7 @@ The server will start at `http://localhost:8072`
 ### Generation Metrics
 - `faithfulness` - Measures factual consistency between response and contexts
 - `answer_relevancy` - Measures relevance of the answer to the question
-- `answer_correctness` - Evaluates correctness against reference answer
+- `answer_accuracy` - Evaluates accuracy against reference answer
 
 ### Similarity Metrics
 - `semantic_similarity` - Semantic similarity between response and reference
@@ -146,7 +146,7 @@ payload = {
             "ML systems learn patterns from data without explicit programming."
         ]
     },
-    "metrics": ["faithfulness", "answer_correctness", "semantic_similarity"],
+    "metrics": ["faithfulness", "answer_accuracy", "semantic_similarity"],
     "evaluation_config": {
         "provider": "openai",
         "evaluator_llm": "gpt-4",
@@ -191,7 +191,7 @@ Each metric requires specific fields in the evaluation data:
 ### Generation Metrics
 - **faithfulness**: `user_input`, `response`, `retrieved_contexts`
 - **answer_relevancy**: `user_input`, `response`
-- **answer_correctness**: `user_input`, `response`, `reference`
+- **answer_accuracy**: `user_input`, `response`, `reference`
 
 ### Similarity Metrics
 - **semantic_similarity**: `response`, `reference` (requires embeddings)

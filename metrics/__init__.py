@@ -20,7 +20,7 @@ METRIC_REGISTRY = {
     # Generation metrics
     "faithfulness": GenerationMetrics,
     "answer_relevancy": GenerationMetrics,
-    "answer_correctness": GenerationMetrics,
+    "answer_accuracy": GenerationMetrics,
     
     # Similarity metrics
     "semantic_similarity": SimilarityMetrics,

@@ -43,7 +43,7 @@ class Config:
         # Generation Metrics
         "faithfulness": {"needs_llm": True, "needs_embeddings": False},
         "answer_relevancy": {"needs_llm": True, "needs_embeddings": True},
-        "answer_correctness": {"needs_llm": True, "needs_embeddings": False},
+        "answer_accuracy": {"needs_llm": True, "needs_embeddings": False},
         
         # Similarity Metrics
         "semantic_similarity": {"needs_llm": False, "needs_embeddings": True},

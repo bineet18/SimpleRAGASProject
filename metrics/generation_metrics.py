@@ -2,7 +2,7 @@ from typing import Dict, Any, List, Optional
 from ragas.metrics import (
     Faithfulness,
     ResponseRelevancy,
-    AnswerCorrectness
+    AnswerAccuracy
 )
 from ragas.dataset_schema import SingleTurnSample
 
@@ -17,7 +17,7 @@ class GenerationMetrics:
         self.metrics = {
             "faithfulness": Faithfulness(llm=llm),
             "answer_relevancy": ResponseRelevancy(llm=llm, embeddings=embeddings),
-            "answer_correctness": AnswerCorrectness(llm=llm)
+            "answer_accuracy": AnswerAccuracy(llm=llm)
         }
     
     async def calculate(self, data: Dict[str, Any], metric_names: List[str]) -> Dict[str, float]:
@@ -72,7 +72,7 @@ class GenerationMetrics:
             if "retrieved_contexts" in data:
                 sample_data["retrieved_contexts"] = data["retrieved_contexts"]
             
-        elif metric_name == "answer_correctness":
+        elif metric_name == "answer_accuracy":
             # Requires: user_input, response, reference
             if "reference" not in data:
                 return None
@@ -94,7 +94,7 @@ class GenerationMetrics:
         return [
             "faithfulness",
             "answer_relevancy",
-            "answer_correctness"
+            "answer_accuracy"
         ]
     
     @staticmethod
@@ -103,5 +103,5 @@ class GenerationMetrics:
         return {
             "faithfulness": ["user_input", "response", "retrieved_contexts"],
             "answer_relevancy": ["user_input", "response"],
-            "answer_correctness": ["user_input", "response", "reference"]
+            "answer_accuracy": ["user_input", "response", "reference"]
         }
