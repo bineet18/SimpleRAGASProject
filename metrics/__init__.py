@@ -1,11 +1,13 @@
 from .retrieval_metrics import RetrievalMetrics
 from .generation_metrics import GenerationMetrics
 from .similarity_metrics import SimilarityMetrics
+from .aspect_critic_metrics import AspectCriticMetrics
 
 __all__ = [
     "RetrievalMetrics",
     "GenerationMetrics",
-    "SimilarityMetrics"
+    "SimilarityMetrics",
+    "AspectCriticMetrics"
 ]
 
 # Metric registry for easy lookup
@@ -23,7 +25,13 @@ METRIC_REGISTRY = {
     # Similarity metrics
     "semantic_similarity": SimilarityMetrics,
     "bleu_score": SimilarityMetrics,
-    "rouge_score": SimilarityMetrics
+    "rouge_score": SimilarityMetrics,
+    
+    # Aspect critic metrics
+    "coherence": AspectCriticMetrics,
+    "conciseness": AspectCriticMetrics,
+    "harmfulness": AspectCriticMetrics,
+    "maliciousness": AspectCriticMetrics
 }
 
 def get_all_supported_metrics():

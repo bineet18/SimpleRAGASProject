@@ -8,7 +8,7 @@ import traceback
 
 from config import config
 from models import model_manager
-from metrics import RetrievalMetrics, GenerationMetrics, SimilarityMetrics, get_all_supported_metrics
+from metrics import RetrievalMetrics, GenerationMetrics, SimilarityMetrics, AspectCriticMetrics, get_all_supported_metrics
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -69,12 +69,14 @@ class MetricEvaluator:
         self.retrieval_handler = None
         self.generation_handler = None
         self.similarity_handler = None
+        self.aspect_critic_handler = None  # Add this line
     
     def initialize_handlers(self, llm, embeddings):
         """Initialize metric handlers with models"""
         self.retrieval_handler = RetrievalMetrics(llm=llm, embeddings=embeddings)
         self.generation_handler = GenerationMetrics(llm=llm, embeddings=embeddings)
         self.similarity_handler = SimilarityMetrics(llm=llm, embeddings=embeddings)
+        self.aspect_critic_handler = AspectCriticMetrics(llm=llm, embeddings=embeddings)  # Add this line
     
     async def evaluate(self, data: Dict[str, Any], metrics: List[str]) -> Dict[str, Optional[float]]:
         """Evaluate requested metrics"""
@@ -84,6 +86,7 @@ class MetricEvaluator:
         retrieval_metrics = [m for m in metrics if m in RetrievalMetrics.get_supported_metrics()]
         generation_metrics = [m for m in metrics if m in GenerationMetrics.get_supported_metrics()]
         similarity_metrics = [m for m in metrics if m in SimilarityMetrics.get_supported_metrics()]
+        aspect_critic_metrics = [m for m in metrics if m in AspectCriticMetrics.get_supported_metrics()]  # Add this line
         
         # Calculate metrics in parallel
         tasks = []
@@ -96,6 +99,10 @@ class MetricEvaluator:
         
         if similarity_metrics and self.similarity_handler:
             tasks.append(self.similarity_handler.calculate(data, similarity_metrics))
+        
+        # Add aspect critic task
+        if aspect_critic_metrics and self.aspect_critic_handler:
+            tasks.append(self.aspect_critic_handler.calculate(data, aspect_critic_metrics))
         
         if tasks:
             metric_results = await asyncio.gather(*tasks)
@@ -141,6 +148,7 @@ async def list_metrics():
         "retrieval_metrics": RetrievalMetrics.get_supported_metrics(),
         "generation_metrics": GenerationMetrics.get_supported_metrics(),
         "similarity_metrics": SimilarityMetrics.get_supported_metrics(),
+        "aspect_critic_metrics": AspectCriticMetrics.get_supported_metrics(),  # Add this line
         "all_metrics": get_all_supported_metrics()
     }
 
@@ -150,7 +158,8 @@ async def metric_requirements():
     return {
         "retrieval": RetrievalMetrics.get_metric_requirements(),
         "generation": GenerationMetrics.get_metric_requirements(),
-        "similarity": SimilarityMetrics.get_metric_requirements()
+        "similarity": SimilarityMetrics.get_metric_requirements(),
+        "aspect_critic": AspectCriticMetrics.get_metric_requirements()  # Add this line
     }
 
 @app.post("/evaluate", response_model=EvaluationResponse)
