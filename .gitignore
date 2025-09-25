@@ -1,0 +1,151 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Environment
+#.env
+#.env.local
+#.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Database
+data/vector_db/
+*.db
+*.sqlite
+*.sqlite3
+
+# Ollama models (large files)
+models/
+*.bin
+*.gguf
+
+# Test outputs
+test_results_*.json
+coverage/
+.coverage
+htmlcov/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# ChromaDB
+.chroma/
+chroma_db/
+persist_directory/
+
+# Project specific
+data/knowledge_base/*.txt
+!data/knowledge_base/.gitkeep
+data/vector_db/*
+!data/vector_db/.gitkeep
+logs/*
+!logs/.gitkeep
+
+
+# Node/Frontend
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+dist/
+build/
+.parcel-cache/
+.npm/
+
+# Python specific
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+wheels/
+pip-wheel-metadata/
+
+# Virtual environments
+bin/
+include/
+lib/
+lib64/
+share/
+pyvenv.cfg
+Scripts/
+
+# OS Files
+Thumbs.db
+.Spotlight-V100
+.Trashes
+._*
+desktop.ini
+
+# Editor/IDE
+*.sublime-project
+*.sublime-workspace
+.project
+.pydevproject
+*.code-workspace
+
+# Ollama specific
+.ollama/
+ollama-models/
+*.ggml
+*.safetensors
+
+# Backup files
+*.backup
+*.old
+*.orig
+*~
+
+# Environment files (uncomment if you want to exclude all env files)
+# *.env
+# *.env.*
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Documentation
+docs/_build/
+site/
+
+# Testing
+.tox/
+.nox/
+.hypothesis/
+
+# Secrets
+*.key
+*.pem
+*.cert
+*.crt
+secrets/
+
+# Cache
+.cache/
+__pycache__/
+.eslintcache
+
+# Monitoring
+.vscode-server/
+.devcontainer/
