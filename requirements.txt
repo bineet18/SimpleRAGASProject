@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+python-dotenv
+ragas
+langchain
+langchain-openai
+langchain-anthropic
+langchain-community
+pydantic
+datasets
+numpy
+pandas
+sacrebleu
