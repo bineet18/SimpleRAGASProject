@@ -50,7 +50,8 @@ class BaseMetric(ABC):
                 embeddings=self.wrapped_embeddings
             )
             
-            # Return score
-            return result[self.metric.name]
+            # Return score - extract from list if necessary
+            score = result[self.metric.name]
+            return float(score[0]) if isinstance(score, list) else float(score)
         except Exception as e:
             raise Exception(f"Error calculating {self.metric.name}: {str(e)}")
