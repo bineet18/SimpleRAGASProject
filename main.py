@@ -5,7 +5,7 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 import os
 from dotenv import load_dotenv
 
-from metrics import METRIC_REGISTRY, METRICS_WITH_GROUND_TRUTH
+from metrics import METRIC_REGISTRY, METRICS_WITH_GROUND_TRUTH, ASPECT_CRITIC_METRICS
 
 # Load environment variables
 load_dotenv()
@@ -71,13 +71,20 @@ async def root():
 
 @app.get("/metrics")
 async def list_metrics():
-    """List all available metrics"""
+    """List all available metrics with their types"""
     metrics_info = []
     for metric_name in METRIC_REGISTRY.keys():
-        metrics_info.append({
+        metric_info = {
             "name": metric_name,
-            "requires_ground_truth": metric_name in METRICS_WITH_GROUND_TRUTH
-        })
+            "requires_ground_truth": metric_name in METRICS_WITH_GROUND_TRUTH,
+            "type": "aspect_critic" if metric_name in ASPECT_CRITIC_METRICS else "standard",
+            "output": "binary (0 or 1)" if metric_name in ASPECT_CRITIC_METRICS else "score (0.0 to 1.0)"
+        }
+        if metric_name in ASPECT_CRITIC_METRICS:
+            # Add aspect description
+            from metrics.aspect_critic import ASPECT_DEFINITIONS
+            metric_info["description"] = ASPECT_DEFINITIONS.get(metric_name, "")
+        metrics_info.append(metric_info)
     return {"metrics": metrics_info}
 
 @app.post("/evaluate", response_model=EvaluateResponse)
@@ -187,6 +194,18 @@ async def evaluate_batch(
 
 if __name__ == "__main__":
     import uvicorn
+    import sys
+    
+    # Check if port is provided as command line argument
+    port = 8000  # default port
+    if len(sys.argv) > 1:
+        try:
+            port = int(sys.argv[1])
+        except ValueError:
+            print(f"Invalid port number: {sys.argv[1]}. Using default port 8000.")
+    
     host = os.getenv("HOST", "0.0.0.0")
-    port = int(os.getenv("PORT", 8000))
+    port = int(os.getenv("PORT", port))
+    
+    print(f"Starting RAGAS API on http://{host}:{port}")
     uvicorn.run(app, host=host, port=port)
