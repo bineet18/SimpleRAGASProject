@@ -2,6 +2,8 @@
 from .answer_relevancy import AnswerRelevancy
 from .answer_similarity import AnswerSimilarity
 from .answer_correctness import AnswerCorrectness
+from .context_precision import ContextPrecision
+from .context_recall import ContextRecall
 from .aspect_critic import (
     AspectCriticMetric,
     HarmfulnessMetric,
@@ -22,12 +24,14 @@ METRIC_REGISTRY = {
     "coherence": CoherenceMetric,
     "correctness": CorrectnessMetric,
     "conciseness": ConcisenessMetric,
+    "context_precision": ContextPrecision,
+    "context_recall": ContextRecall,
     # Generic aspect critic for custom aspects
     "aspect_critic": AspectCriticMetric
 }
 
 # Metrics that require ground_truth
-METRICS_WITH_GROUND_TRUTH = ["answer_similarity", "answer_correctness"]
+METRICS_WITH_GROUND_TRUTH = ["answer_similarity", "answer_correctness","context_precision","context_recall",]
 
 # AspectCritic metrics (binary output)
 ASPECT_CRITIC_METRICS = ["harmfulness", "maliciousness", "coherence", "correctness", "conciseness"]

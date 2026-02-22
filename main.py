@@ -52,6 +52,7 @@ class EvaluateRequest(BaseModel):
     question: str = Field(..., description="User's question/input")
     answer: str = Field(..., description="Chatbot's response")
     ground_truth: Optional[str] = Field(None, description="Expected answer (required for some metrics)")
+    contexts: Optional[List[str]] = Field(None, description="Retrieved contexts (list of strings) required for context_precision/context_recall")
     metrics: List[str] = Field(..., description="List of metrics to evaluate")
 
 class EvaluateResponse(BaseModel):
@@ -122,6 +123,9 @@ async def evaluate(request: EvaluateRequest):
     }
     if request.ground_truth:
         data["ground_truth"] = request.ground_truth
+
+    if request.contexts:
+        data["contexts"] = request.contexts
     
     # Calculate metrics
     scores = {}
